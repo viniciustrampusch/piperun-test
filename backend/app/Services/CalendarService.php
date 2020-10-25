@@ -21,6 +21,11 @@ class CalendarService implements CalendarServiceInterface
         return $this->userRepository->findAll($data['page'] ?? 1, $data['start_at'] ?? null, $data['end_at'] ?? null);
     }
 
+    public function findById($id)
+    {
+        return $this->userRepository->findById($id);
+    }
+
     private function removeMinutes($data)
     {
         if (isset($data['start_at'])) {

@@ -4,7 +4,6 @@ namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\CalendarRepositoryInterface;
 use App\Models\Calendar;
-use App\Exceptions\InvalidDateException;
 
 class CalendarRepository implements CalendarRepositoryInterface
 {
@@ -28,5 +27,10 @@ class CalendarRepository implements CalendarRepositoryInterface
         }
 
         return $query->orderBy('start_at', 'desc')->paginate(15);
+    }
+
+    public function findById($id)
+    {
+        return $this->model->find($id);
     }
 }

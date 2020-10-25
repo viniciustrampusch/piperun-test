@@ -17,3 +17,4 @@ Route::get('/users', ['App\Http\Controllers\Api\UserController', 'index']);
 Route::get('/users/{id}', ['App\Http\Controllers\Api\UserController', 'show']);
 
 Route::get('/calendars', ['App\Http\Controllers\Api\CalendarController', 'index']);
+Route::get('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'show']);
