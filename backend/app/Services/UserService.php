@@ -18,4 +18,9 @@ class UserService implements UserServiceInterface
     {
         return $this->userRepository->findAll($data['page'] ?? 1, $data['term'] ?? null);
     }
+
+    public function findById($id)
+    {
+        return $this->userRepository->findById($id);
+    }
 }

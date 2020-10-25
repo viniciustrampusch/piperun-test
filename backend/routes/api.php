@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/users', ['App\Http\Controllers\Api\UserController', 'index']);
+Route::get('/users/{id}', ['App\Http\Controllers\Api\UserController', 'show']);

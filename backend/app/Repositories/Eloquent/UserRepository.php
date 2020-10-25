@@ -20,4 +20,9 @@ class UserRepository implements UserRepositoryInterface
                            ->orWhere('email', 'like', "%{$term}%")
                            ->paginate(15);
     }
+
+    public function findById($id)
+    {
+        return $this->model->find($id);
+    }
 }
