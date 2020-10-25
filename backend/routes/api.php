@@ -13,12 +13,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/users', ['App\Http\Controllers\Api\UserController', 'index']);
-Route::get('/users/{id}', ['App\Http\Controllers\Api\UserController', 'show']);
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('login', ['App\Http\Controllers\Api\AuthController', 'login']);
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function () {
+        Route::get('logout', ['App\Http\Controllers\Api\AuthController', 'logout']);
+        Route::get('user', ['App\Http\Controllers\Api\AuthController', 'user']);
+    });
+});
 
-Route::get('/calendars', ['App\Http\Controllers\Api\CalendarController', 'index']);
-Route::get('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'show']);
-Route::post('/calendars', ['App\Http\Controllers\Api\CalendarController', 'store']);
-Route::patch('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'moderate']);
-Route::put('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'update']);
-Route::delete('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'destroy']);
+Route::group([
+    'prefix' => 'users'
+], function () {
+    Route::get('/', ['App\Http\Controllers\Api\UserController', 'index']);
+    Route::get('/{id}', ['App\Http\Controllers\Api\UserController', 'show']);
+});
+
+Route::group([
+    'prefix' => 'calendars'
+], function () {
+    Route::get('/', ['App\Http\Controllers\Api\CalendarController', 'index']);
+    Route::get('/{id}', ['App\Http\Controllers\Api\CalendarController', 'show']);
+    Route::post('/', ['App\Http\Controllers\Api\CalendarController', 'store']);
+    Route::group([
+        'middleware' => 'auth:api'
+      ], function () {
+          Route::patch('/{id}', ['App\Http\Controllers\Api\CalendarController', 'moderate']);
+          Route::group([
+            'middleware' => 'has-role-admin'
+          ], function () {
+              Route::put('/{id}', ['App\Http\Controllers\Api\CalendarController', 'update']);
+              Route::delete('/{id}', ['App\Http\Controllers\Api\CalendarController', 'destroy']);
+          });
+      });
+});
