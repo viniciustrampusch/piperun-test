@@ -19,3 +19,4 @@ Route::get('/users/{id}', ['App\Http\Controllers\Api\UserController', 'show']);
 Route::get('/calendars', ['App\Http\Controllers\Api\CalendarController', 'index']);
 Route::get('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'show']);
 Route::post('/calendars', ['App\Http\Controllers\Api\CalendarController', 'store']);
+Route::patch('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'moderate']);

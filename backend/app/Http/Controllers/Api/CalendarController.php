@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Collections\CalendarCollection;
 use App\Http\Resources\CalendarResource;
 use App\Http\Requests\Calendar\CalendarStoreRequest;
+use App\Http\Requests\Calendar\CalendarModerateRequest;
 use App\Exceptions\InvalidDateException;
 use Exception;
 
@@ -57,6 +58,19 @@ class CalendarController extends Controller
             return response()->json([
                 'error' => $exception->getMessage()
             ], HttpResponseStatus::BAD_REQUEST);
+        } catch (Exception $exception) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function moderate(CalendarModerateRequest $request, $id)
+    {
+        try {
+            return response()->json([
+                'data' => new CalendarResource($this->service->moderate($id, $request->all()))
+            ], HttpResponseStatus::OK);
         } catch (Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage()

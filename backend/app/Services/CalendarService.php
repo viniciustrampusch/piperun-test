@@ -40,6 +40,11 @@ class CalendarService implements CalendarServiceInterface
         return $calendar;
     }
 
+    public function moderate($id, $data)
+    {
+        return $this->userRepository->moderate($id, $data['status_id']);
+    }
+
     private function removeMinutes($data)
     {
         if (isset($data['start_at'])) {

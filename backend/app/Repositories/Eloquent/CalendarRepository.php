@@ -44,6 +44,15 @@ class CalendarRepository implements CalendarRepositoryInterface
         return $this->model->create($data);
     }
 
+    public function moderate($id, $status)
+    {
+        $calendar = $this->model->find($id);
+        $calendar->status_id = $status;
+        $calendar->save();
+
+        return $calendar;
+    }
+
     private function validateDateByRequested($data, $id = null)
     {
         $query = $this->model::where('requested_id', $data['requested_id'])
