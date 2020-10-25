@@ -53,6 +53,18 @@ class CalendarRepository implements CalendarRepositoryInterface
         return $calendar;
     }
 
+    public function update($id, $data)
+    {
+        if ($this->validateDateByRequested($data, $id) === true) {
+            throw new InvalidDateException('Data de início/fim inválida');
+        }
+
+        $calendar = $this->model->find($id);
+        $calendar->update($data);
+
+        return $calendar;
+    }
+
     private function validateDateByRequested($data, $id = null)
     {
         $query = $this->model::where('requested_id', $data['requested_id'])

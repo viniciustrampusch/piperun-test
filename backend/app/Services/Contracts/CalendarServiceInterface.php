@@ -8,4 +8,5 @@ interface CalendarServiceInterface
     public function findAll($data);
     public function findById($id);
     public function moderate($id, $data);
+    public function update($id, $data);
 }

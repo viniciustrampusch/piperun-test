@@ -8,4 +8,5 @@ interface CalendarRepositoryInterface
     public function findAll($page, $startAt, $endAt);
     public function findById($id);
     public function moderate($id, $status);
+    public function update($id, $data);
 }
