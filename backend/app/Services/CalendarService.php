@@ -51,6 +51,11 @@ class CalendarService implements CalendarServiceInterface
         return $this->userRepository->update($id, $data);
     }
 
+    public function delete($id)
+    {
+        return $this->userRepository->delete($id);
+    }
+
     private function removeMinutes($data)
     {
         if (isset($data['start_at'])) {

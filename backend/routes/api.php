@@ -21,3 +21,4 @@ Route::get('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 's
 Route::post('/calendars', ['App\Http\Controllers\Api\CalendarController', 'store']);
 Route::patch('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'moderate']);
 Route::put('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'update']);
+Route::delete('/calendars/{id}', ['App\Http\Controllers\Api\CalendarController', 'destroy']);

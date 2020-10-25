@@ -95,4 +95,17 @@ class CalendarController extends Controller
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            $this->service->delete($id);
+
+            return response()->json([], HttpResponseStatus::OK);
+        } catch (Exception $exception) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -65,6 +65,11 @@ class CalendarRepository implements CalendarRepositoryInterface
         return $calendar;
     }
 
+    public function delete($id)
+    {
+        return $this->model->destroy($id);
+    }
+
     private function validateDateByRequested($data, $id = null)
     {
         $query = $this->model::where('requested_id', $data['requested_id'])
