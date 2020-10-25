@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Repositories\Contracts\CalendarRepositoryInterface;
 use App\Services\Contracts\CalendarServiceInterface;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CalendarMail;
 use Carbon\Carbon;
 
 class CalendarService implements CalendarServiceInterface
@@ -24,6 +26,18 @@ class CalendarService implements CalendarServiceInterface
     public function findById($id)
     {
         return $this->userRepository->findById($id);
+    }
+
+    public function create($data)
+    {
+        $data['status_id'] = $this->calendarStatusRepository->getStatusBySlug('pending')->id;
+        $data = $this->removeMinutes($data);
+        
+        $calendar = $this->userRepository->create($data);
+        
+        Mail::to($calendar->requested->email)->send(new CalendarMail());
+
+        return $calendar;
     }
 
     private function removeMinutes($data)

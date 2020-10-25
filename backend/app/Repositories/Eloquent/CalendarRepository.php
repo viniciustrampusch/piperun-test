@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Repositories\Contracts\CalendarRepositoryInterface;
 use App\Models\Calendar;
+use App\Exceptions\InvalidDateException;
 
 class CalendarRepository implements CalendarRepositoryInterface
 {
@@ -32,5 +33,29 @@ class CalendarRepository implements CalendarRepositoryInterface
     public function findById($id)
     {
         return $this->model->find($id);
+    }
+
+    public function create($data)
+    {
+        if ($this->validateDateByRequested($data) === true) {
+            throw new InvalidDateException('Data de início/fim inválida');
+        }
+        
+        return $this->model->create($data);
+    }
+
+    private function validateDateByRequested($data, $id = null)
+    {
+        $query = $this->model::where('requested_id', $data['requested_id'])
+                             ->where(static function ($where) use ($data) {
+                                 $where->whereBetween('start_at', [$data['start_at'], $data['end_at']])
+                                       ->orWhereBetween('end_at', [$data['start_at'], $data['end_at']]);
+                             });
+
+        if ($id) {
+            $query->where('id', '<>', $id);
+        }
+
+        return $query->count() > 0;
     }
 }

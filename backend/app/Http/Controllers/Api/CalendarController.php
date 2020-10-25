@@ -8,6 +8,8 @@ use App\Constants\HttpResponseStatus;
 use Illuminate\Http\Request;
 use App\Http\Resources\Collections\CalendarCollection;
 use App\Http\Resources\CalendarResource;
+use App\Http\Requests\Calendar\CalendarStoreRequest;
+use App\Exceptions\InvalidDateException;
 use Exception;
 
 class CalendarController extends Controller
@@ -38,6 +40,23 @@ class CalendarController extends Controller
             return response()->json([
                 'data' => new CalendarResource($this->service->findById($id))
             ], HttpResponseStatus::OK);
+        } catch (Exception $exception) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function store(CalendarStoreRequest $request)
+    {
+        try {
+            return response()->json([
+                'data' => new CalendarResource($this->service->create($request->all()))
+            ], HttpResponseStatus::OK);
+        } catch (InvalidDateException $exception) {
+            return response()->json([
+                'error' => $exception->getMessage()
+            ], HttpResponseStatus::BAD_REQUEST);
         } catch (Exception $exception) {
             return response()->json([
                 'error' => $exception->getMessage()

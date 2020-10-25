@@ -4,6 +4,7 @@ namespace App\Repositories\Contracts;
 
 interface CalendarRepositoryInterface
 {
+    public function create($data);
     public function findAll($page, $startAt, $endAt);
     public function findById($id);
 }
