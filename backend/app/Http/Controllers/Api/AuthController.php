@@ -32,11 +32,15 @@ class AuthController extends Controller
             ], HttpResponseStatus::OK);
         } catch (UnauthorizedException $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::UNAUTHORIZED);
         } catch (Exception $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }

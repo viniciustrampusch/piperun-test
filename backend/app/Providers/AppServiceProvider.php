@@ -32,6 +32,11 @@ class AppServiceProvider extends ServiceProvider
             'App\Services\Contracts\CalendarServiceInterface',
             'App\Services\CalendarService'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\CalendarStatusRepositoryInterface',
+            'App\Repositories\Eloquent\CalendarStatusRepository'
+        );
     }
 
     /**

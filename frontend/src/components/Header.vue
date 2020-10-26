@@ -11,7 +11,7 @@
             </a>
           </div>
           <div class="col-1 offset-9">
-            <button class="btn float-right">Entrar</button>
+            <button class="btn float-right" @click="login()">Entrar</button>
           </div>
         </div>
       </div>
@@ -24,6 +24,9 @@ export default {
   methods: {
     backHome () {
       this.$router.push('/')
+    },
+    login () {
+      this.$router.push('/login')
     }
   }
 }

@@ -37,6 +37,11 @@ class CalendarRepository implements CalendarRepositoryInterface
 
     public function create($data)
     {
+        // Validar:
+        // Se horário é permitido
+        // Se data inicio é maior que data fim
+        // se é final de semana
+        // se é feriado
         if ($this->validateDateByRequested($data) === true) {
             throw new InvalidDateException('Data de início/fim inválida');
         }

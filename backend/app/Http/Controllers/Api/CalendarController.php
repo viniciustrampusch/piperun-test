@@ -31,7 +31,9 @@ class CalendarController extends Controller
             ], HttpResponseStatus::OK);
         } catch (Exception $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }
@@ -44,7 +46,9 @@ class CalendarController extends Controller
             ], HttpResponseStatus::OK);
         } catch (Exception $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }
@@ -57,11 +61,15 @@ class CalendarController extends Controller
             ], HttpResponseStatus::OK);
         } catch (InvalidDateException $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::BAD_REQUEST);
         } catch (Exception $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }
@@ -74,7 +82,9 @@ class CalendarController extends Controller
             ], HttpResponseStatus::OK);
         } catch (Exception $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }
@@ -87,11 +97,15 @@ class CalendarController extends Controller
             ], HttpResponseStatus::OK);
         } catch (InvalidDateException $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::BAD_REQUEST);
         } catch (Exception $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }
@@ -104,7 +118,9 @@ class CalendarController extends Controller
             return response()->json([], HttpResponseStatus::OK);
         } catch (Exception $exception) {
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
             ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
         }
     }

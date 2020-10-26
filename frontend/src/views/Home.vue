@@ -11,7 +11,7 @@
                   {{user.name}}
                 </p>
                 <button class="btn btn-calendar" @click="enter(user.id)">
-                  Acessar agenda
+                  Agendar reunião
                 </button>
               </div>
             </div>

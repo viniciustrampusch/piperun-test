@@ -34,6 +34,7 @@ class CalendarStoreRequest extends FormRequest
             'start_at.date' => 'O campo DATA DE INÍCIO precisa ser uma data válida',
             'end_at.required' => 'O campo DATA DE CONCLUSÃO é obrigatório',
             'end_at.date' => 'O campo DATA DE CONCLUSÃO precisa ser uma data válida',
+            'description.required' => 'O campo DESCRIÇÃO é obrigatório',
             'customer_name.required' => 'O campo CLIENTE NOME é obrigatório',
             'customer_name.max' => 'O campo CLIENTE NOME deve ter no máximo 255 caracteres',
             'customer_email.required' => 'O campo CLIENTE E-MAIL é obrigatório',

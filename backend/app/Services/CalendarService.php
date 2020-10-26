@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Contracts\CalendarRepositoryInterface;
+use App\Repositories\Contracts\CalendarStatusRepositoryInterface;
 use App\Services\Contracts\CalendarServiceInterface;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CalendarMail;
@@ -11,10 +12,12 @@ use Carbon\Carbon;
 class CalendarService implements CalendarServiceInterface
 {
     protected $userRepository;
+    protected $calendarStatusRepository;
 
-    public function __construct(CalendarRepositoryInterface $userRepository)
+    public function __construct(CalendarRepositoryInterface $userRepository, CalendarStatusRepositoryInterface $calendarStatusRepository)
     {
         $this->userRepository = $userRepository;
+        $this->calendarStatusRepository = $calendarStatusRepository;
     }
 
     public function findAll($data)
@@ -30,7 +33,10 @@ class CalendarService implements CalendarServiceInterface
 
     public function create($data)
     {
+        $data['start_at'] .= ' ' . $data['start_at_time'];
+        $data['end_at'] .= ' ' . $data['end_at_time'];
         $data['status_id'] = $this->calendarStatusRepository->getStatusBySlug('pending')->id;
+        
         $data = $this->removeMinutes($data);
         
         $calendar = $this->userRepository->create($data);

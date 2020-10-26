@@ -32,7 +32,7 @@ class UserService implements UserServiceInterface
         $credentials = $request->only(['email', 'password']);
 
         if (!Auth::attempt($credentials)) {
-            throw new UnauthorizedException('Não autorizado');
+            throw new UnauthorizedException('E-mail ou senha inválido');
         }
 
         $user = $request->user();
