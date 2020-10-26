@@ -9,7 +9,7 @@
 `php artisan migrate --seed`
 
 ### Alterar configurações
-Criar e/ou alterar o arquivo .env, e alterações os valores para conexão com o banco de dados, e os dados SMTP
+Criar e/ou alterar o arquivo .env, e alterar os valores para conexão com o banco de dados e os dados SMTP
 
 ### Executar o servidor
 `php artisan serve`
