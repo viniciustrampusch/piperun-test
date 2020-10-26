@@ -37,13 +37,17 @@ class CalendarRepository implements CalendarRepositoryInterface
 
     public function create($data)
     {
-        // Validar:
-        // Se horário é permitido
-        // Se data inicio é maior que data fim
-        // se é final de semana
-        // se é feriado
+        // TODO: Validar se é feriado
+        if ($data['start_at']->gt($data['end_at']) === true) {
+            throw new InvalidDateException('Data de início/fim inválida, data/hora inicial é maior que a data/hora final');
+        }
+
+        if ($data['start_at']->isWeekend() || $data['end_at']->isWeekend()) {
+            throw new InvalidDateException('Data de início/fim inválida, agendamento não pode ser realizado no final de semana');
+        }
+        
         if ($this->validateDateByRequested($data) === true) {
-            throw new InvalidDateException('Data de início/fim inválida');
+            throw new InvalidDateException('Data de início/fim inválida, já possui um agendamento neste dia');
         }
         
         return $this->model->create($data);
