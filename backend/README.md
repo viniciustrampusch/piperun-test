@@ -2,6 +2,7 @@
 
 ### Instalar dependência
 `composer install`
+
 `php artisan passport:install`
 
 ### Rodar migrations e seed
@@ -18,4 +19,5 @@ Criar e/ou alterar o arquivo .env, e alterações os valores para conexão com o
 
 ### Executar os lints
 `php artisan insights --config-path="config/insights.php"`
+
 `phpcs ./app"`
