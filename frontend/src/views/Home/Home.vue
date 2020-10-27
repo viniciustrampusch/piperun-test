@@ -20,6 +20,9 @@
 </template>
 
 <script>
+import UserService from './service'
+const userService = UserService.build()
+
 export default {
   name: 'Home',
   data () {
@@ -28,11 +31,9 @@ export default {
     }
   },
   mounted () {
-    const baseURI = 'http://127.0.0.1:8000/api/users'
-    this.$http.get(baseURI)
-      .then((result) => {
-        this.users = result.data.data
-      })
+    userService.search({}).then((result) => {
+      this.users = result.data
+    })
   },
   methods: {
     enter (userId) {

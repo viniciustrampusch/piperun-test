@@ -74,6 +74,11 @@
 <script>
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
+import UserService from '../home/service'
+import CalendarService from './service'
+
+const calendarService = CalendarService.build()
+const userService = UserService.build()
 
 export default {
   name: 'Calendar',
@@ -103,49 +108,18 @@ export default {
   },
   mounted () {
     this.clearForm()
-    const baseURI = `http://127.0.0.1:8000/api/users/${this.$route.params.user}`
 
-    this.$http.get(baseURI)
-      .then((result) => {
-        this.user = result.data.data
-      })
+    userService.read(this.$route.params.user).then((result) => {
+      this.user = result.data
+    })
   },
   methods: {
     save () {
-      const baseURI = `http://127.0.0.1:8000/api/calendars`
       this.calendar.requested_id = this.user.id
       this.isLoading = true
       this.error_message = ''
 
-      this.$http.post(baseURI, this.calendar)
-        .then((result) => {
-          this.isLoading = false
-          this.$toast.open({
-            message: 'Salvo com sucesso',
-            type: 'success',
-            position: 'top-right'
-          })
-
-          this.clearForm()
-        })
-        .catch((error) => {
-          for (let err in error.response.data.error) {
-            let message = error.response.data.error[err]
-
-            if (Array.isArray(error.response.data.error[err])) {
-              message = error.response.data.error[err][0]
-            }
-
-            this.error_message += `${message}<br/>`
-          }
-
-          this.isLoading = false
-          this.$toast.open({
-            message: 'Ocorreu um erro ao salvar',
-            type: 'error',
-            position: 'top-right'
-          })
-        })
+      calendarService.create(this.calendar).then(this.registerSuccess).catch(this.registerError)
     },
     clearForm () {
       this.calendar = {
@@ -159,6 +133,34 @@ export default {
         requested_id: ''
       }
       this.error_message = ''
+    },
+    registerSuccess (response) {
+      this.isLoading = false
+      this.$toast.open({
+        message: 'Salvo com sucesso',
+        type: 'success',
+        position: 'top-right'
+      })
+
+      this.clearForm()
+    },
+    registerError (error) {
+      for (let err in error.response.data.error) {
+        let message = error.response.data.error[err]
+
+        if (Array.isArray(error.response.data.error[err])) {
+          message = error.response.data.error[err][0]
+        }
+
+        this.error_message += `${message}<br/>`
+      }
+
+      this.isLoading = false
+      this.$toast.open({
+        message: 'Ocorreu um erro ao salvar',
+        type: 'error',
+        position: 'top-right'
+      })
     }
   }
 }
