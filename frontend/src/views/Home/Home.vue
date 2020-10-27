@@ -1,41 +1,31 @@
 <template>
-  <div>
-    <Header></Header>
-    <main>
-      <div class="container-fluid">
-        <div class="row mt-4">
-          <div class="col-2" v-for="user of users" :key="user.id">
-            <div class="card mb-4 shadow-sm">
-              <div class="card-body">
-                <p class="card-text text-center h2">
-                  {{user.name}}
-                </p>
-                <button class="btn btn-calendar" @click="enter(user.id)">
-                  Agendar reunião
-                </button>
-              </div>
+  <main>
+    <div class="container-fluid">
+      <div class="row mt-4">
+        <div class="col-2" v-for="user of users" :key="user.id">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <p class="card-text text-center h2">
+                {{user.name}}
+              </p>
+              <button class="btn btn-calendar" @click="enter(user.id)">
+                Agendar reunião
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </main>
-  </div>
+    </div>
+  </main>
 </template>
 
 <script>
-import Header from '../components/Header'
 export default {
   name: 'Home',
-  components: {
-    Header
-  },
   data () {
     return {
       users: []
     }
-  },
-  created () {
-    document.title += '  - Home'
   },
   mounted () {
     const baseURI = 'http://127.0.0.1:8000/api/users'
