@@ -74,9 +74,7 @@
 <script>
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-
 const baseURI = `http://127.0.0.1:8000/api`
-
 export default {
   name: 'Calendar',
   components: {
@@ -109,6 +107,7 @@ export default {
   },
   mounted () {
     this.clearForm()
+
     this.$http.get(`${baseURI}/users/${this.$route.params.user}`)
       .then((result) => {
         this.requested = result.data.data
@@ -116,19 +115,7 @@ export default {
 
     if (this.$route.params.calendar) {
       this.$http.get(`${baseURI}/calendars/${this.$route.params.calendar}`)
-        .then((result) => {
-          this.calendar = {
-            id: result.data.data.id,
-            start_at: result.data.data.start_at.date,
-            start_at_time: result.data.data.start_at.time,
-            end_at: result.data.data.end_at.date,
-            end_at_time: result.data.data.end_at.time,
-            description: result.data.data.description,
-            customer_name: result.data.data.requester.name,
-            customer_email: result.data.data.requester.email,
-            requested_id: result.data.data.requested.id
-          }
-        })
+        .then(this.populate)
     }
   },
   methods: {
@@ -153,6 +140,19 @@ export default {
         this.$http.post(`${baseURI}/calendars`, this.calendar)
           .then(this.registerSuccess)
           .catch(this.registerError)
+      }
+    },
+    populate (result) {
+      this.calendar = {
+        id: result.data.data.id,
+        start_at: result.data.data.start_at.date,
+        start_at_time: result.data.data.start_at.time,
+        end_at: result.data.data.end_at.date,
+        end_at_time: result.data.data.end_at.time,
+        description: result.data.data.description,
+        customer_name: result.data.data.requester.name,
+        customer_email: result.data.data.requester.email,
+        requested_id: result.data.data.requested.id
       }
     },
     clearForm () {

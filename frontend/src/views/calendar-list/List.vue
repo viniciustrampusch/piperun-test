@@ -42,25 +42,25 @@
                   <td>{{item.requested.name}}</td>
                   <td v-if="user">{{item.status}}</td>
                   <td v-if="user && user.id === requested.id">
-                    <a href="#" @click.prevent="moderar('approved', item.id)" class="btn btn-aprovar" title="Aprovar" v-if="item.status === 'Pendente'">
+                    <a href="#" @click.prevent="moderate('approved', item.id)" class="btn btn-aprovar" title="Aprovar" v-if="item.status === 'Pendente'">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-check-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm9.854-2.854a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
                       </svg>
                     </a>
-                    <a href="#" @click.prevent="moderar('reproved', item.id)" class="btn btn-reprovar" v-if="item.status === 'Pendente'">
+                    <a href="#" @click.prevent="moderate('reproved', item.id)" class="btn btn-reprovar" v-if="item.status === 'Pendente'">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-dash-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5-.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"/>
                       </svg>
                     </a>
                   </td>
                   <td v-if="user && user.perfil === 'admin'">
-                    <a href="#" @click.prevent="editar(item.id)" class="btn btn-edit" title="Editar">
+                    <a href="#" @click.prevent="edita(item.id)" class="btn btn-edit" title="Editar">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                       </svg>
                     </a>
-                    <a href="#" @click.prevent="remover(item.id)" class="btn btn-remove" title="Remover">
+                    <a href="#" @click.prevent="remove(item.id)" class="btn btn-remove" title="Remover">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                         <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -79,7 +79,6 @@
 <script>
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-
 const baseURI = `http://127.0.0.1:8000/api`
 export default {
   name: 'List',
@@ -120,7 +119,7 @@ export default {
     enter (userId) {
       this.$router.push(`/calendar/${this.requested.id}`)
     },
-    moderar (slugStatus, calendarId) {
+    moderate (slugStatus, calendarId) {
       this.$http.patch(`${baseURI}/calendars/${calendarId}`, {
         slug: slugStatus
       }, {
@@ -132,7 +131,7 @@ export default {
           this.search()
         })
     },
-    remover (calendarId) {
+    remove (calendarId) {
       this.$http.delete(`${baseURI}/calendars/${calendarId}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -142,7 +141,7 @@ export default {
           this.search()
         })
     },
-    editar (calendarId) {
+    edit (calendarId) {
       this.$router.push(`/calendar/${this.requested.id}/${calendarId}`)
     }
   }

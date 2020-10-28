@@ -15,7 +15,7 @@
                 <label for="password">Sua senha</label>
                 <input type="password" class="form-control" id="password" v-model="form.password">
               </div>
-              <button type="submit" class="btn m0 float-right" @click.prevent="logar()">Entrar</button>
+              <button type="submit" class="btn m0 float-right" @click.prevent="login()">Entrar</button>
             </form>
           </div>
       </div>
@@ -42,7 +42,7 @@ export default {
     }
   },
   methods: {
-    logar () {
+    login () {
       this.isLoading = true
       this.error_message = ''
 
