@@ -4,14 +4,14 @@
     <div class="container-fluid">
       <div class="row mt-4">
           <div class="col-6 offset-3">
-            <h2>Agendamento para {{user.name}}</h2>
+            <h2>Agendamento para {{requested.name}}</h2>
             <form class="mt-4">
               <div class="alert alert-danger" v-show="error_message" v-html="error_message"></div>
-              <div class="form-group">
+              <div class="form-group" v-if="!isLoggedIn">
                 <label for="name">Seu Nome</label>
                 <input type="text" class="form-control" id="name" v-model="calendar.customer_name">
               </div>
-              <div class="form-group">
+              <div class="form-group" v-if="!isLoggedIn">
                 <label for="email">Seu E-mail</label>
                 <input type="email" class="form-control" id="email" v-model="calendar.customer_email">
               </div>
@@ -86,7 +86,7 @@ export default {
     return {
       isLoading: false,
       error_message: '',
-      user: {
+      requested: {
         id: '',
         name: '',
         email: ''
@@ -103,19 +103,27 @@ export default {
       }
     }
   },
+  computed: {
+    isLoggedIn: function () { return this.$store.getters.isLoggedIn },
+    user: function () { return this.$store.getters.getUser }
+  },
   mounted () {
     this.clearForm()
-
+    
     this.$http.get(`${baseURI}/users/${this.$route.params.user}`)
       .then((result) => {
-        this.user = result.data.data
+        this.requested = result.data.data
       })
   },
   methods: {
     save () {
-      this.calendar.requested_id = this.user.id
+      this.calendar.requested_id = this.requested.id
       this.isLoading = true
       this.error_message = ''
+
+      if (this.isLoggedIn) {
+        this.calendar.requester_id = this.user.id
+      }
 
       this.$http.post(`${baseURI}/calendars`, this.calendar)
         .then(this.registerSuccess)

@@ -31,6 +31,11 @@ class CalendarService implements CalendarServiceInterface
         return $this->userRepository->findById($id);
     }
 
+    public function findByUserId($id, $data)
+    {
+        return $this->userRepository->findByUserId($id, $data);
+    }
+
     public function create($data)
     {
         $data['start_at'] .= ' ' . $data['start_at_time'];

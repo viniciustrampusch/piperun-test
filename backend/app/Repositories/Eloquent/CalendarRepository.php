@@ -35,6 +35,21 @@ class CalendarRepository implements CalendarRepositoryInterface
         return $this->model->find($id);
     }
 
+    public function findByUserId($id, $data)
+    {
+        $query = $this->model->newQuery();
+        
+        if (isset($data['start_at'])) {
+            $query->whereDate('start_at', '>=', $data['start_at']);
+        }
+
+        if (isset($data['end_at'])) {
+            $query->whereDate('end_at', '<=', $data['end_at']);
+        }
+        
+        return $query->where('requested_id', $id)->orderBy('start_at')->get();
+    }
+
     public function create($data)
     {
         // TODO: Validar se é feriado

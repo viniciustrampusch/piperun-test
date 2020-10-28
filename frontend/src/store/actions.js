@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const Login = ({ commit }, user) => {
+export const login = ({ commit }, user) => {
   return new Promise((resolve, reject) => {
     commit('auth_request')
     axios({ url: 'http://127.0.0.1:8000/api/auth/login', data: user, method: 'POST' })
@@ -22,7 +22,7 @@ export const Login = ({ commit }, user) => {
   })
 }
 
-export const Logout = ({ commit }) => {
+export const logout = ({ commit }) => {
   return new Promise((resolve, reject) => {
     commit('logout')
     localStorage.removeItem('token')

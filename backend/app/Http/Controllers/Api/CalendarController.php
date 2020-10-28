@@ -53,6 +53,21 @@ class CalendarController extends Controller
         }
     }
 
+    public function getByUser(Request $request, $id)
+    {
+        try {
+            return response()->json([
+                'data' => new CalendarCollection($this->service->findByUserId($id, $request->all()))
+            ], HttpResponseStatus::OK);
+        } catch (Exception $exception) {
+            return response()->json([
+                'error' => [
+                    'message' => $exception->getMessage()
+                ]
+            ], HttpResponseStatus::INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function store(CalendarStoreRequest $request)
     {
         try {

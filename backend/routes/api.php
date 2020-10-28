@@ -37,6 +37,7 @@ Route::group([
 ], function () {
     Route::get('/', ['App\Http\Controllers\Api\CalendarController', 'index']);
     Route::get('/{id}', ['App\Http\Controllers\Api\CalendarController', 'show']);
+    Route::get('/user/{id}', ['App\Http\Controllers\Api\CalendarController', 'getByUser']);
     Route::post('/', ['App\Http\Controllers\Api\CalendarController', 'store']);
     Route::group([
         'middleware' => 'auth:api'

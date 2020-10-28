@@ -8,7 +8,7 @@
               <p class="card-text text-center h2">
                 {{user.name}}
               </p>
-              <button class="btn btn-calendar" @click="enter(user.id)">
+              <button class="btn btn-calendar" @click.prevent="enter(user.id)">
                 Agendar reunião
               </button>
             </div>
@@ -30,14 +30,13 @@ export default {
     }
   },
   mounted () {
-    console.log(process.env.ROOT_API)
     this.$http.get(`${baseURI}/users`).then((result) => {
       this.users = result.data.data
     })
   },
   methods: {
     enter (userId) {
-      this.$router.push(`/calendar/${userId}`)
+      this.$router.push(`/list/${userId}`)
     }
   }
 }
