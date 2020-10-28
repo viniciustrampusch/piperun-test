@@ -17,15 +17,14 @@ class CalendarModerateRequest extends FormRequest
     public function rules()
     {
         return [
-            'status_id' => 'required|integer',
+            'slug' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'status_id.required' => 'O campo STATUS é obrigatório',
-            'status_id.integer' => 'O campo STATUS precisar ser um valor númerico',
+            'status_id.required' => 'O campo STATUS é obrigatório'
         ];
     }
 

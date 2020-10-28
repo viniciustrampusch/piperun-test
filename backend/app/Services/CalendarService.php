@@ -53,6 +53,8 @@ class CalendarService implements CalendarServiceInterface
 
     public function moderate($id, $data)
     {
+        $data['status_id'] = $this->calendarStatusRepository->getStatusBySlug($data['slug'])->id;
+
         return $this->userRepository->moderate($id, $data['status_id']);
     }
 
