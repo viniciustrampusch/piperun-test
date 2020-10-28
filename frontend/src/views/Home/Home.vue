@@ -20,8 +20,7 @@
 </template>
 
 <script>
-import UserService from './service'
-const userService = UserService.build()
+const baseURI = `http://127.0.0.1:8000/api`
 
 export default {
   name: 'Home',
@@ -31,8 +30,9 @@ export default {
     }
   },
   mounted () {
-    userService.search({}).then((result) => {
-      this.users = result.data
+    console.log(process.env.ROOT_API)
+    this.$http.get(`${baseURI}/users`).then((result) => {
+      this.users = result.data.data
     })
   },
   methods: {

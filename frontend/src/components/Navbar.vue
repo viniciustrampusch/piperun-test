@@ -10,8 +10,12 @@
               />
             </router-link>
           </div>
-          <div class="col-1 offset-9">
-            <router-link to="/login">
+          <div class="col-2 offset-8">
+            <div v-if="isLoggedIn">
+              <span class="float-left mt-4 ml-5"> Olá, {{user.name}} </span>
+              <button class="btn float-right" @click.prevent="logout()">Logout</button>
+            </div>
+            <router-link to="/login" v-else>
               <button class="btn float-right">Entrar</button>
             </router-link>
           </div>
@@ -22,7 +26,16 @@
 
 <script>
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  computed: {
+    isLoggedIn: function () { return this.$store.getters.isLoggedIn },
+    user: function () { return this.$store.getters.getUser }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+    }
+  }
 }
 </script>
 

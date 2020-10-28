@@ -28,7 +28,8 @@ class AuthController extends Controller
             return response()->json([
                 'access_token' => $token->accessToken,
                 'token_type' => 'Bearer',
-                'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString()
+                'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString(),
+                'user' => new UserResource($request->user())
             ], HttpResponseStatus::OK);
         } catch (UnauthorizedException $exception) {
             return response()->json([

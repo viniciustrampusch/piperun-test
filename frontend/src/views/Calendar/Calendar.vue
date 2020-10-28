@@ -74,11 +74,8 @@
 <script>
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import UserService from '../home/service'
-import CalendarService from './service'
 
-const calendarService = CalendarService.build()
-const userService = UserService.build()
+const baseURI = `http://127.0.0.1:8000/api`
 
 export default {
   name: 'Calendar',
@@ -109,9 +106,10 @@ export default {
   mounted () {
     this.clearForm()
 
-    userService.read(this.$route.params.user).then((result) => {
-      this.user = result.data
-    })
+    this.$http.get(`${baseURI}/users/${this.$route.params.user}`)
+      .then((result) => {
+        this.user = result.data.data
+      })
   },
   methods: {
     save () {
@@ -119,7 +117,9 @@ export default {
       this.isLoading = true
       this.error_message = ''
 
-      calendarService.create(this.calendar).then(this.registerSuccess).catch(this.registerError)
+      this.$http.post(`${baseURI}/calendars`, this.calendar)
+        .then(this.registerSuccess)
+        .catch(this.registerError)
     },
     clearForm () {
       this.calendar = {

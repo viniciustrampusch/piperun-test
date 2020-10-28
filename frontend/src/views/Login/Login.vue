@@ -1,10 +1,12 @@
 <template>
   <main>
+    <loading :active.sync="isLoading" :is-full-page="true"></loading>
     <div class="container-fluid">
       <div class="row mt-4">
           <div class="col-6 offset-3">
             <h2>Login</h2>
             <form class="mt-4">
+              <div class="alert alert-danger" v-show="error_message" v-html="error_message"></div>
               <div class="form-group">
                 <label for="name">Seu e-mail</label>
                 <input type="text" class="form-control" id="name" v-model="form.email">
@@ -13,7 +15,7 @@
                 <label for="password">Sua senha</label>
                 <input type="password" class="form-control" id="password" v-model="form.password">
               </div>
-              <button type="submit" class="btn m0 float-right">Entrar</button>
+              <button type="submit" class="btn m0 float-right" @click.prevent="logar()">Entrar</button>
             </form>
           </div>
       </div>
@@ -22,14 +24,53 @@
 </template>
 
 <script>
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 export default {
   name: 'Login',
+  components: {
+    Loading
+  },
   data () {
     return {
       form: {
         email: '',
         password: ''
+      },
+      error_message: '',
+      isLoading: false
+    }
+  },
+  methods: {
+    logar () {
+      this.isLoading = true
+      this.error_message = ''
+
+      this.$store.dispatch('login', this.form)
+        .then(this.loginSucess)
+        .catch(this.loginError)
+    },
+    loginSucess (response) {
+      this.isLoading = false
+      this.$router.push('/')
+    },
+    loginError (error) {
+      for (let err in error.response.data.error) {
+        let message = error.response.data.error[err]
+
+        if (Array.isArray(error.response.data.error[err])) {
+          message = error.response.data.error[err][0]
+        }
+
+        this.error_message += `${message}<br/>`
       }
+
+      this.isLoading = false
+      this.$toast.open({
+        message: 'Ocorreu um erro ao salvar',
+        type: 'error',
+        position: 'top-right'
+      })
     }
   }
 }
