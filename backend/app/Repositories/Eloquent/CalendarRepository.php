@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 use App\Repositories\Contracts\CalendarRepositoryInterface;
 use App\Models\Calendar;
 use App\Exceptions\InvalidDateException;
+use Carbon\Carbon;
 
 class CalendarRepository implements CalendarRepositoryInterface
 {
@@ -52,7 +53,13 @@ class CalendarRepository implements CalendarRepositoryInterface
 
     public function create($data)
     {
+        if (isset($data['start_at']) && isset($data['end_at'])) {
+            $data['start_at'] = new Carbon($data['start_at']);
+            $data['end_at'] = new Carbon($data['end_at']);
+        }
+
         // TODO: Validar se é feriado
+
         if ($data['start_at']->gt($data['end_at']) === true) {
             throw new InvalidDateException('Data de início/fim inválida, data/hora inicial é maior que a data/hora final');
         }

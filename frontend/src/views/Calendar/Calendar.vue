@@ -109,7 +109,6 @@ export default {
   },
   mounted () {
     this.clearForm()
-    
     this.$http.get(`${baseURI}/users/${this.$route.params.user}`)
       .then((result) => {
         this.requested = result.data.data
@@ -117,20 +116,19 @@ export default {
 
     if (this.$route.params.calendar) {
       this.$http.get(`${baseURI}/calendars/${this.$route.params.calendar}`)
-      .then((result) => {
-
-        this.calendar = {
-          id: result.data.data.id,
-          start_at: result.data.data.start_at.date,
-          start_at_time: result.data.data.start_at.time,
-          end_at: result.data.data.end_at.date,
-          end_at_time: result.data.data.end_at.time,
-          description: result.data.data.description,
-          customer_name: result.data.data.requester.name,
-          customer_email: result.data.data.requester.email,
-          requested_id: result.data.data.requested.id
-        }
-      })
+        .then((result) => {
+          this.calendar = {
+            id: result.data.data.id,
+            start_at: result.data.data.start_at.date,
+            start_at_time: result.data.data.start_at.time,
+            end_at: result.data.data.end_at.date,
+            end_at_time: result.data.data.end_at.time,
+            description: result.data.data.description,
+            customer_name: result.data.data.requester.name,
+            customer_email: result.data.data.requester.email,
+            requested_id: result.data.data.requested.id
+          }
+        })
     }
   },
   methods: {
@@ -143,9 +141,19 @@ export default {
         this.calendar.requester_id = this.user.id
       }
 
-      this.$http.post(`${baseURI}/calendars`, this.calendar)
-        .then(this.registerSuccess)
-        .catch(this.registerError)
+      if (this.calendar.id) {
+        this.$http.put(`${baseURI}/calendars/${this.calendar.id}`, this.calendar, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+          .then(this.registerSuccess)
+          .catch(this.registerError)
+      } else {
+        this.$http.post(`${baseURI}/calendars`, this.calendar)
+          .then(this.registerSuccess)
+          .catch(this.registerError)
+      }
     },
     clearForm () {
       this.calendar = {

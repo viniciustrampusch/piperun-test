@@ -24,23 +24,23 @@
                   <th>Data de início</th>
                   <th>Data de fim</th>
                   <th>Duração</th>
-                  <th>Pauta</th>
-                  <th>Solicitante</th>
+                  <th v-if="user">Pauta</th>
+                  <th v-if="user">Solicitante</th>
                   <th>Solicitado</th>
-                  <th>Status</th>
+                  <th v-if="user">Status</th>
                   <th v-if="user && requested && user.id === requested.id">Moderar</th>
                   <th v-if="user && user.perfil === 'admin'">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="item of list" :key="item.id">
-                  <td>{{item.start_at.date}} {{item.start_at.time}}</td>
-                  <td>{{item.end_at.date}} {{item.end_at.time}}</td>
+                  <td>{{item.start_at.date | moment("DD/MM/YYYY")}} {{item.start_at.time}}</td>
+                  <td>{{item.end_at.date | moment("DD/MM/YYYY")}} {{item.end_at.time}}</td>
                   <td>{{ parseInt(item.runtime / 60)}} hora(s) e {{item.runtime % 60}} minutos</td>
-                  <td>{{item.description}}</td>
-                  <td>{{item.requester.name}}</td>
+                  <td v-if="user">{{item.description}}</td>
+                  <td v-if="user">{{item.requester.name}}</td>
                   <td>{{item.requested.name}}</td>
-                  <td>{{item.status}}</td>
+                  <td v-if="user">{{item.status}}</td>
                   <td v-if="user && user.id === requested.id">
                     <a href="#" @click.prevent="moderar('approved', item.id)" class="btn btn-aprovar" title="Aprovar" v-if="item.status === 'Pendente'">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-check-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -101,7 +101,6 @@ export default {
     user: function () { return this.$store.getters.getUser }
   },
   mounted () {
-
     this.$http.get(`${baseURI}/users/${this.$route.params.user}`)
       .then((result) => {
         this.requested = result.data.data
@@ -113,10 +112,10 @@ export default {
     search () {
       this.isLoading = true
       this.$http.get(`${baseURI}/calendars/user/${this.$route.params.user}`, { params: this.params })
-      .then((result) => {
-        this.list = result.data.data
-        this.isLoading = false
-      })
+        .then((result) => {
+          this.list = result.data.data
+          this.isLoading = false
+        })
     },
     enter (userId) {
       this.$router.push(`/calendar/${this.requested.id}`)
@@ -129,9 +128,9 @@ export default {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
-      .then((result) => {
-        this.search()
-      })
+        .then((result) => {
+          this.search()
+        })
     },
     remover (calendarId) {
       this.$http.delete(`${baseURI}/calendars/${calendarId}`, {
@@ -139,9 +138,9 @@ export default {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       })
-      .then((result) => {
-        this.search()
-      })
+        .then((result) => {
+          this.search()
+        })
     },
     editar (calendarId) {
       this.$router.push(`/calendar/${this.requested.id}/${calendarId}`)

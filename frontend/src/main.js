@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import axios from 'axios'
+import VueMoment from 'vue-moment'
 import router from './router'
 import store from './store/index'
 import VueToast from 'vue-toast-notification'
@@ -18,6 +19,7 @@ if (token) {
 }
 
 Vue.use(VueToast)
+Vue.use(VueMoment)
 
 /* eslint-disable no-new */
 new Vue({

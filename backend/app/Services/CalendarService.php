@@ -5,12 +5,12 @@ namespace App\Services;
 use App\Repositories\Contracts\CalendarRepositoryInterface;
 use App\Repositories\Contracts\CalendarStatusRepositoryInterface;
 use App\Services\Contracts\CalendarServiceInterface;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\CalendarMail;
-use Carbon\Carbon;
+use App\Traits\MailWarning;
 
 class CalendarService implements CalendarServiceInterface
 {
+    use MailWarning;
+
     protected $userRepository;
     protected $calendarStatusRepository;
 
@@ -22,7 +22,6 @@ class CalendarService implements CalendarServiceInterface
 
     public function findAll($data)
     {
-        $data = $this->removeMinutes($data);
         return $this->userRepository->findAll($data['page'] ?? 1, $data['start_at'] ?? null, $data['end_at'] ?? null);
     }
 
@@ -40,18 +39,11 @@ class CalendarService implements CalendarServiceInterface
     {
         $data['start_at'] .= ' ' . $data['start_at_time'];
         $data['end_at'] .= ' ' . $data['end_at_time'];
-
-        if (isset($data['id']) && $data['id'] !== null) {
-            return $this->update($data['id'], $data);
-        }
-
-        $data = $this->removeMinutes($data);
-
         $data['status_id'] = $this->calendarStatusRepository->getStatusBySlug('pending')->id;
         
         $calendar = $this->userRepository->create($data);
         
-        Mail::to($calendar->requested->email)->send(new CalendarMail());
+        $this->sendMail($calendar->requested->email);
 
         return $calendar;
     }
@@ -65,27 +57,14 @@ class CalendarService implements CalendarServiceInterface
 
     public function update($id, $data)
     {
-        $data = $this->removeMinutes($data);
+        $data['start_at'] .= ' ' . $data['start_at_time'];
+        $data['end_at'] .= ' ' . $data['end_at_time'];
+
         return $this->userRepository->update($id, $data);
     }
 
     public function delete($id)
     {
         return $this->userRepository->delete($id);
-    }
-
-    private function removeMinutes($data)
-    {
-        if (isset($data['start_at'])) {
-            $data['start_at'] = new Carbon($data['start_at']);
-            $data['start_at'] = $data['start_at']->minute(0)->second(0);
-        }
-
-        if (isset($data['end_at'])) {
-            $data['end_at'] = new Carbon($data['end_at']);
-            $data['end_at'] = $data['end_at']->minute(0)->second(0);
-        }
-
-        return $data;
     }
 }
