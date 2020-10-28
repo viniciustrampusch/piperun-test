@@ -1,4 +1,4 @@
-# Aplicação frontend desenvolvido com Vuejs
+# Aplicação front-end desenvolvido com Vuejs
 
 ### Instalar dependência
 `npm install`
