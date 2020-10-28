@@ -13,12 +13,12 @@ class CalendarResource extends JsonResource
             'id' => $this->id,
             'status' => $this->status->name,
             'start_at' => [
-                'date' => (new Carbon($this->start_at))->format('d/m/Y'),
-                'time' => (new Carbon($this->start_at))->format('H:i')
+                'date' => (new Carbon($this->start_at))->format('Y-m-d'),
+                'time' => (new Carbon($this->start_at))->format('H:i:s')
             ],
             'end_at' => [
-                'date' => (new Carbon($this->end_at))->format('d/m/Y'),
-                'time' => (new Carbon($this->end_at))->format('H:i')
+                'date' => (new Carbon($this->end_at))->format('Y-m-d'),
+                'time' => (new Carbon($this->end_at))->format('H:i:s')
             ],
             'runtime' => (new Carbon($this->start_at))->diffInMinutes(new Carbon($this->end_at)),
             'description' => $this->description,

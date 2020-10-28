@@ -40,9 +40,14 @@ class CalendarService implements CalendarServiceInterface
     {
         $data['start_at'] .= ' ' . $data['start_at_time'];
         $data['end_at'] .= ' ' . $data['end_at_time'];
-        $data['status_id'] = $this->calendarStatusRepository->getStatusBySlug('pending')->id;
-        
+
+        if (isset($data['id']) && $data['id'] !== null) {
+            return $this->update($data['id'], $data);
+        }
+
         $data = $this->removeMinutes($data);
+
+        $data['status_id'] = $this->calendarStatusRepository->getStatusBySlug('pending')->id;
         
         $calendar = $this->userRepository->create($data);
         

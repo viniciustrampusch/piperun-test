@@ -114,6 +114,24 @@ export default {
       .then((result) => {
         this.requested = result.data.data
       })
+
+    if (this.$route.params.calendar) {
+      this.$http.get(`${baseURI}/calendars/${this.$route.params.calendar}`)
+      .then((result) => {
+
+        this.calendar = {
+          id: result.data.data.id,
+          start_at: result.data.data.start_at.date,
+          start_at_time: result.data.data.start_at.time,
+          end_at: result.data.data.end_at.date,
+          end_at_time: result.data.data.end_at.time,
+          description: result.data.data.description,
+          customer_name: result.data.data.requester.name,
+          customer_email: result.data.data.requester.email,
+          requested_id: result.data.data.requested.id
+        }
+      })
+    }
   },
   methods: {
     save () {
@@ -131,6 +149,7 @@ export default {
     },
     clearForm () {
       this.calendar = {
+        id: null,
         start_at: '',
         start_at_time: '',
         end_at: '',
