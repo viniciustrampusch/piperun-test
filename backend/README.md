@@ -22,3 +22,9 @@ Criar e/ou alterar o arquivo .env, e alterar os valores para conexão com o banc
 `php artisan insights --config-path="config/insights.php"`
 
 `phpcs ./app"`
+
+### Usuários
+Nome     | E-mail             | Senha    | Perfil
+-------- | ------------------ | -------- | ------
+Admin    | admin@email.com    | admin    | admin
+Vinicius | vinicius@email.com | vinicius | normal
