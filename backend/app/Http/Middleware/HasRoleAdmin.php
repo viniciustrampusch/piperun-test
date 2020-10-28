@@ -17,7 +17,7 @@ class HasRoleAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->user()->role()->slug !== 'admin') {
+        if ($request->user()->role->slug !== 'admin') {
             return response()->json([
                 'error' => 'Não autorizado'
             ], HttpResponseStatus::UNAUTHORIZED);
