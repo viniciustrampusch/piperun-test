@@ -1,15 +1,16 @@
 # API Restful desenvolvida com Laravel 8
 
+### Alterar configurações
+Criar e/ou alterar o arquivo .env, e alterar os valores para conexão com o banco de dados e os dados SMTP
+
 ### Instalar dependência
 `composer install`
-
-`php artisan passport:install`
 
 ### Rodar migrations e seed
 `php artisan migrate --seed`
 
-### Alterar configurações
-Criar e/ou alterar o arquivo .env, e alterar os valores para conexão com o banco de dados e os dados SMTP
+### Instalar Passport
+`php artisan passport:install`
 
 ### Executar o servidor
 `php artisan serve`
