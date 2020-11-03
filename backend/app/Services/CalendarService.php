@@ -5,12 +5,10 @@ namespace App\Services;
 use App\Repositories\Contracts\CalendarRepositoryInterface;
 use App\Repositories\Contracts\CalendarStatusRepositoryInterface;
 use App\Services\Contracts\CalendarServiceInterface;
-use App\Traits\MailWarning;
+use App\Notifications\ApproveSchedule;
 
 class CalendarService implements CalendarServiceInterface
 {
-    use MailWarning;
-
     protected $userRepository;
     protected $calendarStatusRepository;
 
@@ -43,7 +41,7 @@ class CalendarService implements CalendarServiceInterface
         
         $calendar = $this->userRepository->create($data);
         
-        $this->sendMail($calendar->requested->email);
+        $calendar->requested->notify(new ApproveSchedule($calendar));
 
         return $calendar;
     }

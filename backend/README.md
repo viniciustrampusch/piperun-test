@@ -20,7 +20,7 @@ Criar e/ou alterar o arquivo .env, e alterar os valores para conexão com o banc
 ### Executar os lints
 `php artisan insights --config-path="config/insights.php"`
 
-`phpcs ./app"`
+`phpcs ./app`
 
 ### Usuário admin
 E-mail `admin@email.com`

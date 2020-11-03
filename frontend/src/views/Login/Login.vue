@@ -6,7 +6,7 @@
           <div class="col-6 offset-3">
             <h2>Login</h2>
             <form class="mt-4">
-              <div class="alert alert-danger" v-show="error_message" v-html="error_message"></div>
+              <div class="alert alert-danger" v-show="errorMessage" v-html="errorMessage"></div>
               <div class="form-group">
                 <label for="name">Seu e-mail</label>
                 <input type="text" class="form-control" id="name" v-model="form.email">
@@ -37,14 +37,14 @@ export default {
         email: '',
         password: ''
       },
-      error_message: '',
+      errorMessage: '',
       isLoading: false
     }
   },
   methods: {
     login () {
       this.isLoading = true
-      this.error_message = ''
+      this.errorMessage = ''
 
       this.$store.dispatch('login', this.form)
         .then(this.loginSucess)
@@ -55,14 +55,14 @@ export default {
       this.$router.push('/')
     },
     loginError (error) {
-      for (let err in error.response.data.error) {
-        let message = error.response.data.error[err]
+      for (let key in error.response.data.error) {
+        let message = error.response.data.error[key]
 
-        if (Array.isArray(error.response.data.error[err])) {
-          message = error.response.data.error[err][0]
+        if (Array.isArray(error.response.data.error[key])) {
+          message = error.response.data.error[key][0]
         }
 
-        this.error_message += `${message}<br/>`
+        this.errorMessage += `${message}<br/>`
       }
 
       this.isLoading = false

@@ -6,7 +6,7 @@
           <div class="col-6 offset-3">
             <h2>Agendamento para {{requested.name}}</h2>
             <form class="mt-4">
-              <div class="alert alert-danger" v-show="error_message" v-html="error_message"></div>
+              <div class="alert alert-danger" v-show="errorMessage" v-html="errorMessage"></div>
               <div class="form-group" v-if="!isLoggedIn">
                 <label for="name">Seu Nome</label>
                 <input type="text" class="form-control" id="name" v-model="calendar.customer_name">
@@ -83,7 +83,7 @@ export default {
   data () {
     return {
       isLoading: false,
-      error_message: '',
+      errorMessage: '',
       requested: {
         id: '',
         name: '',
@@ -122,7 +122,7 @@ export default {
     save () {
       this.calendar.requested_id = this.requested.id
       this.isLoading = true
-      this.error_message = ''
+      this.errorMessage = ''
 
       if (this.isLoggedIn) {
         this.calendar.requester_id = this.user.id
@@ -167,7 +167,7 @@ export default {
         customer_email: '',
         requested_id: ''
       }
-      this.error_message = ''
+      this.errorMessage = ''
     },
     registerSuccess (response) {
       this.isLoading = false
@@ -180,14 +180,14 @@ export default {
       this.clearForm()
     },
     registerError (error) {
-      for (let err in error.response.data.error) {
-        let message = error.response.data.error[err]
+      for (let key in error.response.data.error) {
+        let message = error.response.data.error[key]
 
-        if (Array.isArray(error.response.data.error[err])) {
-          message = error.response.data.error[err][0]
+        if (Array.isArray(error.response.data.error[key])) {
+          message = error.response.data.error[key][0]
         }
 
-        this.error_message += `${message}<br/>`
+        this.errorMessage += `${message}<br/>`
       }
 
       this.isLoading = false
