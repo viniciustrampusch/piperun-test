@@ -6,10 +6,11 @@ Criar e/ou alterar o arquivo .env, e alterar os valores para conexão com o banc
 ### Instalar dependência
 `composer install`
 
-`php artisan passport:install`
-
 ### Rodar migrations e seed
 `php artisan migrate --seed`
+
+### Instalar Passport
+`php artisan passport:install`
 
 ### Executar o servidor
 `php artisan serve`
@@ -25,3 +26,10 @@ Criar e/ou alterar o arquivo .env, e alterar os valores para conexão com o banc
 ### Usuário admin
 E-mail `admin@email.com`
 Senha `admin`
+
+### Usuários
+Nome     | E-mail             | Senha    | Perfil
+-------- | ------------------ | -------- | ------
+Admin    | admin@email.com    | admin    | admin
+Vinicius | vinicius@email.com | vinicius | normal
+
