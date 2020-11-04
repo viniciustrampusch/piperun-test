@@ -24,11 +24,14 @@ class CalendarFactory extends Factory
      */
     public function definition()
     {
+        $start_at = Carbon::now()->addDays(rand(1, 365))->addHours(rand(1, 24));
+        $end_at = $start_at->addHour();
+
         return [
-            'start_at' => Carbon::now()->format('Y-m-d'),
-            'start_at_time' => Carbon::now()->format('H:i'),
-            'end_at' => Carbon::now()->addHour()->format('Y-m-d'),
-            'end_at_time' => Carbon::now()->addHour()->format('H:i'),
+            'start_at' => $start_at->format('Y-m-d'),
+            'start_at_time' => $start_at->format('H:i'),
+            'end_at' => $end_at->format('Y-m-d'),
+            'end_at_time' => $end_at->format('H:i'),
             'description' => Str::random(10),
             'customer_name' => $this->faker->name,
             'customer_email' => $this->faker->unique()->safeEmail,
